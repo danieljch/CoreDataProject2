@@ -21,8 +21,3 @@ struct FilteredList: View {
     }
 }
 
-struct FilteredList_Previews: PreviewProvider {
-    static var previews: some View {
-        FilteredList()
-    }
-}
