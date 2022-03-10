@@ -12,7 +12,9 @@ struct ContentView: View {
     @State private var lastNameFilter = "A"
     var body: some View {
         VStack {
-            FilteredList(filter: lastNameFilter)
+            FilteredList(filterKey: "lastName", filterValue: lastNameFilter) { (singer: Singer) in
+                Text("\(singer.wrappedFirstName) \(singer.wrappedLastName)")
+            }
             Button("Add Examples") {
                 let taylor = Singer(context: moc)
                 taylor.firstName = "Taylor"
