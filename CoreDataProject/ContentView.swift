@@ -10,9 +10,18 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
     @State private var lastNameFilter = "A"
+    
+    var predicate : String {
+        if beginsWith {
+            return "BEGINSWITH"
+        } else {
+            return "ENDSWITH"
+        }
+    }
+    @State private var beginsWith = true
     var body: some View {
         VStack {
-            FilteredList(filterKey: "lastName", filterValue: lastNameFilter) { (singer: Singer) in
+            FilteredList(predicate: predicate, filterKey: "lastName", filterValue: lastNameFilter) { (singer: Singer) in
                 Text("\(singer.wrappedFirstName) \(singer.wrappedLastName)")
             }
             Button("Add Examples") {
@@ -36,7 +45,10 @@ struct ContentView: View {
             }
 
             Button("Show S") {
-                lastNameFilter = "S"
+                lastNameFilter = "S "
+            }
+            Toggle(isOn: $beginsWith) {
+                Text("BEGINSWITH")
             }
         }
     }
