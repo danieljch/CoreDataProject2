@@ -10,7 +10,17 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
     @State private var lastNameFilter = "A"
-    
+    enum predicateType {
+        case beginsWith, endsWith, contains
+        func output() -> String {
+            switch self {
+            case .beginsWith: return "BEGINSWITH"
+            case .endsWith: return "ENDSWITH"
+            case .contains: return "CONTAINS"
+            }
+        }
+            
+    }
     var predicate : String {
         if beginsWith {
             return "BEGINSWITH"
