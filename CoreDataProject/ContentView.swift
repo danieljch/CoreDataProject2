@@ -10,11 +10,12 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
     @State private var lastNameFilter = "A"
-    
+    @State private var sortDescriptor = [NSSortDescriptor(keyPath: \Singer.lastName, ascending: true)]
     @State private var predicates = predicateType.contains
+    @State private var orderLastName = true
     var body: some View {
         VStack {
-            FilteredList(predicate: predicates, filterKey: "lastName", filterValue: lastNameFilter) { (singer: Singer) in
+            FilteredList(sortDescriptor: sortDescriptor, predicate: predicates, filterKey: "lastName", filterValue: lastNameFilter) { (singer: Singer) in
                 Text("\(singer.wrappedFirstName) \(singer.wrappedLastName)")
             }
             Button("Add Examples") {
@@ -44,6 +45,15 @@ struct ContentView: View {
                 ForEach(predicateType.allCases, id: \.self) { predicate in
                     Text(predicate.rawValue)
                  }
+            }
+            Toggle(isOn: $orderLastName) {
+                Text("Order Sorting Last Name")
+            }.onChange(of: orderLastName) { newValue in
+                if newValue {
+                    sortDescriptor = [NSSortDescriptor(keyPath: \Singer.lastName, ascending: true)]
+                }else {
+                    sortDescriptor = [NSSortDescriptor(keyPath: \Singer.lastName, ascending: false)]
+                }
             }
            
         }
