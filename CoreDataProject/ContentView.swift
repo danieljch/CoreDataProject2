@@ -10,17 +10,9 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
     @State private var lastNameFilter = "A"
-    enum predicateType {
-        case beginsWith, endsWith, contains
-        func output() -> String {
-            switch self {
-            case .beginsWith: return "BEGINSWITH"
-            case .endsWith: return "ENDSWITH"
-            case .contains: return "CONTAINS"
-            }
-        }
+    
             
-    }
+    
     var predicate : String {
         if beginsWith {
             return "BEGINSWITH"
@@ -29,9 +21,10 @@ struct ContentView: View {
         }
     }
     @State private var beginsWith = true
+    @State private var predicates = predicateType.contains
     var body: some View {
         VStack {
-            FilteredList(predicate: predicate, filterKey: "lastName", filterValue: lastNameFilter) { (singer: Singer) in
+            FilteredList(predicate: predicates, filterKey: "lastName", filterValue: lastNameFilter) { (singer: Singer) in
                 Text("\(singer.wrappedFirstName) \(singer.wrappedLastName)")
             }
             Button("Add Examples") {
@@ -55,8 +48,14 @@ struct ContentView: View {
             }
 
             Button("Show S") {
-                lastNameFilter = "S "
+                lastNameFilter = "S"
             }
+            Picker("Predicate", selection: $predicates){
+                ForEach(predicateType.allCases, id: \.self) { predicate in
+                    Text(predicate.rawValue)
+                 }
+            }
+           
             Toggle(isOn: $beginsWith) {
                 Text("BEGINSWITH")
             }

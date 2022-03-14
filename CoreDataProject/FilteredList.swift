@@ -7,6 +7,13 @@
 
 import SwiftUI
 import CoreData
+enum predicateType: String, CaseIterable {
+    case beginsWith
+    case endsWith
+    case contains
+   
+    }
+  
 
 struct FilteredList<T: NSManagedObject, Content: View>: View {
     @FetchRequest var fetchRequest: FetchedResults<T>
@@ -20,8 +27,17 @@ struct FilteredList<T: NSManagedObject, Content: View>: View {
         }
     }
 
-    init(predicate: String, filterKey: String, filterValue: String, @ViewBuilder content: @escaping (T) -> Content) {
-        _fetchRequest = FetchRequest<T>(sortDescriptors: [], predicate: NSPredicate(format: "%K \(predicate)[c] %@", filterKey, filterValue))
+    init(predicate: predicateType, filterKey: String, filterValue: String, @ViewBuilder content: @escaping (T) -> Content) {
+         var predicateString: String {
+            switch predicate {
+            case .beginsWith: return "BEGINSWITH"
+            case .endsWith: return "ENDSWITH"
+            case .contains: return "CONTAINS"
+               
+                }
+            
+        }
+        _fetchRequest = FetchRequest<T>(sortDescriptors: [], predicate: NSPredicate(format: "%K \(predicateString)[c] %@", filterKey, filterValue))
         self.content = content
     }
 }
