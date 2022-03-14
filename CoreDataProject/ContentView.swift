@@ -11,16 +11,6 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
     @State private var lastNameFilter = "A"
     
-            
-    
-    var predicate : String {
-        if beginsWith {
-            return "BEGINSWITH"
-        } else {
-            return "ENDSWITH"
-        }
-    }
-    @State private var beginsWith = true
     @State private var predicates = predicateType.contains
     var body: some View {
         VStack {
@@ -56,9 +46,6 @@ struct ContentView: View {
                  }
             }
            
-            Toggle(isOn: $beginsWith) {
-                Text("BEGINSWITH")
-            }
         }
     }
 }
